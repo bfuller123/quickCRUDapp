@@ -1,5 +1,5 @@
 var testUsers = {
-  "Wendy-Ginger": {
+  "Wendy-Ginger-Thu Feb 11 2010 12:05:09 GMT-0500 (Central Daylight Time)": {
     first: "Wendy",
     last: "Ginger",
     dob: "1972-11-18",
@@ -7,7 +7,7 @@ var testUsers = {
     zip: "75214",
     userSince: "Thu Feb 11 2010 12:05:09 GMT-0500 (Central Daylight Time)"
   },
-  "Robert-Miller": {
+  "Robert-Miller-Wed Jan 06 2016 14:05:09 GMT-0500 (Central Daylight Time)": {
     first: "Robert",
     last: "Miller",
     dob: "1987-06-15",
@@ -28,6 +28,7 @@ var storage = {
 }
 
 var userFunctions = {
+  currentUserInView: null,
   loadUsers: function() {
     $('.table-body').empty();
     if(localStorage.getItem('users') === null){
@@ -57,30 +58,38 @@ var userFunctions = {
   },
   viewUser: function() {
     var user = $(this).attr('data-user');
+    userFunctions.currentUserInView = user;
     var userBase = storage.users[user];
     $('#modalLabel').text(userBase.first + " " + userBase.last);
-    $('.modal-body').html("<p>Member Since: " + userBase.userSince + "</p>");
+    $('#memberSince').text(userBase.userSince);
   },
-  addUser: function(fullName, firstName, lastName, dateOfBirth, phoneNumber, zipCode) {
-    storage.users[fullName] = {
+  addUser: function(uid, firstName, lastName, dateOfBirth, phoneNumber, zipCode, date) {
+    storage.users[uid] = {
       first: firstName,
       last: lastName,
       dob: dateOfBirth,
       phone: phoneNumber,
       zip: zipCode,
-      userSince: window.Date()
+      userSince: date
     }
     storage.update(storage.users);
     userFunctions.loadUsers();
   },
-  updateUser: function(fullName, firstName, lastName, dateOfBirth, phoneNumber, zipCode) {
-    storage.users[fullName] = {
-      first: firstName,
-      last: lastName,
-      dob: dateOfBirth,
-      phone: phoneNumber,
-      zip: zipCode,
-      userSince: window.Date()
+  updateUser: function(uid, firstName, lastName, dateOfBirth, phoneNumber, zipCode) {
+    if (firstName != undefined && firstName != "") {
+      storage.users[uid].first = firstName;
+    }
+    if (lastName != undefined && lastName != "") {
+      storage.users[uid].last = lastName;
+    }
+    if (dateOfBirth != undefined && dateOfBirth != "") {
+      storage.users[uid].dob = dateOfBirth;
+    }
+    if (phoneNumber != undefined && phoneNumber != "") {
+      storage.users[uid].phone = phoneNumber;
+    }
+    if (zipCode != undefined && zipCode != "") {
+      storage.users[uid].zip = zipCode;
     }
     storage.update(storage.users);
     userFunctions.loadUsers();
@@ -96,21 +105,29 @@ var formFunctions = {
     // $('#phone-number').val("");
     location.reload(); //typically would not use a manual reload and would instead use the above code to clear form. Used this so form validation errors are removed after user added
   },
-  getUserInfo: function() {
-    var firstName = $('#first-name').val().trim();
-    var lastName = $('#last-name').val().trim();
-    var dob = $('#dob').val().trim();
-    var zipCode = $('#zip-code').val().trim();
-    var phoneNumber = $('#phone-number').val().trim();
-    var fullName = firstName + '-' + lastName;
-    var listOfUsers = Object.keys(storage.users);
-    if(listOfUsers.includes(fullName)){
-      // delete storage.users[fullName]
-      userFunctions.updateUser(fullName, firstName, lastName, dob, phoneNumber, zipCode);
-      formFunctions.clearForm();
+  getUserInfo: function(check) {
+    if (check === "update") {
+      var uid = userFunctions.currentUserInView;
+      var firstName = $('#modal-first-name').val().trim();
+      var lastName = $('#modal-last-name').val().trim();
+      var dob = $('#modal-dob').val().trim();
+      var zipCode = $('#modal-zip-code').val().trim();
+      var phoneNumber = $('#modal-phone-number').val().trim();
+      var listOfUsers = Object.keys(storage.users);
+      if(listOfUsers.includes(uid)){
+        userFunctions.updateUser(uid, firstName, lastName, dob, phoneNumber, zipCode);
+        formFunctions.clearForm();
+      }
     }
-    else {
-      userFunctions.addUser(fullName, firstName, lastName, dob, phoneNumber, zipCode);
+    else if (check === "add") {
+      var firstName = $('#first-name').val().trim();
+      var lastName = $('#last-name').val().trim();
+      var dob = $('#dob').val().trim();
+      var zipCode = $('#zip-code').val().trim();
+      var phoneNumber = $('#phone-number').val().trim();
+      var date = window.Date();
+      var uid = firstName + '-' + lastName + '-' + date;
+      userFunctions.addUser(uid, firstName, lastName, dob, phoneNumber, zipCode);
       formFunctions.clearForm();
     }
   },
@@ -144,10 +161,42 @@ var formFunctions = {
         }
       }
     });
-    console.log($('#add-user-form').valid());
     if($('#add-user-form').valid()) {
-      formFunctions.getUserInfo();
+      formFunctions.getUserInfo("add");
     }
+  },
+  validateModalForm: function() {
+    jQuery.validator.setDefaults({
+      debug: true,
+      success: 'valid'
+    })
+   $('#update-user-form').validate({
+      rules: {
+        modalfirstname: {
+          minlength: 1
+        },
+        modallastname: {
+          minlength: 1
+        },
+        modalphonenumber: {
+          digits: true,
+          rangelength: [10, 10]
+        },
+        modalzipcode: {
+          digits: true,
+          rangelength: [5,5]
+        }
+      }
+    });
+    if($('#update-user-form').valid()) {
+      formFunctions.getUserInfo("update");
+    }
+  },
+  updateUserClicked: function() {
+    formFunctions.validateModalForm();
+  },
+  addUserClicked: function() {
+    formFunctions.validateForm();
   }
 }
 
@@ -155,5 +204,6 @@ $(document).ready(function() {
   userFunctions.loadUsers();
   $('body').on('click', '.delete-button', userFunctions.deleteUser);
   $('body').on('click', '.view-button', userFunctions.viewUser);
-  $('body').on('click', '#add-button', formFunctions.validateForm);
+  $('body').on('click', '#add-button', formFunctions.addUserClicked);
+  $('body').on('click', '#update-button', formFunctions.updateUserClicked);
 })
