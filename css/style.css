@@ -1,4 +1,17 @@
+.jumbotron {
+  font-family: 'Gruppo', cursive;
+  background-color: #34495e;
+  color: white;
+  border-radius: 0px !important;
+}
 
+img {
+  height: 50%;
+  width: 50%;
+  min-height: 100px;
+  min-width: 100px;
+  border-radius: 50%;
+}
 
 .user-buttons {
   display: flex;
