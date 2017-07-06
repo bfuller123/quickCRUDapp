@@ -10,7 +10,7 @@
 
 .user-buttons > button {
   width: 40%;
-  min-width: 70px;
+  min-width: 60px;
 }
 
 .table-title, .sign-up > .header {
@@ -25,11 +25,11 @@ form {
 }
 
 .sign-up {
-  min-width: 402px;
+  min-width: 382px;
 }
 
 form {
-  min-width: 370px;
+  min-width: 350px;
 }
 
 form > div > div > input {
