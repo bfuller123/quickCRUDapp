@@ -10,26 +10,30 @@
 
 .user-buttons > button {
   width: 40%;
-  min-width: 60px;
+  min-width: 70px;
 }
 
 .table-title, .sign-up > .header {
   text-align: center;
-  background-color: purple;
+  background-color: #9B59B6;
+  color: white;
 }
 
 form {
   text-align: center;
   border: 1px LightGray solid;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  align-content: center;
-  justify-content: space-around;
 }
 
-form > div > input {
-  /*margin: 2% 0;*/
+.sign-up {
+  min-width: 402px;
+}
+
+form {
+  min-width: 370px;
+}
+
+form > div > div > input {
+  min-width: 120px;
   text-align: center;
   font-size: 14px;
 }
