@@ -1,26 +1,19 @@
-// TODO: Make it so won't add user unless phone number is correct format, and zipcode is 5 digits
-
 var testUsers = {
-  "Brett-Fuller": {
-    first: "Brett",
-    last: "Fuller",
-    dob: "1988-06-28",
-    phone: "312-714-6011",
-    zip: "75214"
+  "Wendy-Ginger": {
+    first: "Wendy",
+    last: "Ginger",
+    dob: "1972-11-18",
+    phone: "5551011982",
+    zip: "75214",
+    userSince: "Thu Feb 11 2010 12:05:09 GMT-0500 (Central Daylight Time)"
   },
-  "Ashley-Fuller": {
-    first: "Ashley",
-    last: "Fuller",
+  "Robert-Miller": {
+    first: "Robert",
+    last: "Miller",
     dob: "1987-06-15",
-    phone: "312-714-7637",
-    zip: "75214"
-  },
-  "Calvin-Fuller": {
-    first: "Calvin",
-    last: "Fuller",
-    dob: "2016-04-02",
-    phone: "312-714-7637",
-    zip: "75214"
+    phone: "3127187637",
+    zip: "75202",
+    userSince: "Wed Jan 06 2016 14:05:09 GMT-0500 (Central Daylight Time)"
   }
 };
 
@@ -52,7 +45,7 @@ var userFunctions = {
       userItem.append('<td>'+storage.users[allUsers[i]].dob+'</td>');
       userItem.append('<td>'+storage.users[allUsers[i]].phone+'</td>');
       userItem.append('<td>'+storage.users[allUsers[i]].zip+'</td>');
-      userItem.append('<td class="user-buttons"><button class="btn btn-sm btn-warning view-button" data-user="'+allUsers[i]+'">View</button><button class="btn btn-sm btn-danger delete-button" data-user="'+allUsers[i]+'">Delete</button></td>');
+      userItem.append('<td class="user-buttons"><button type="button" class="btn btn-sm btn-warning view-button" data-toggle="modal" data-target=".myModal" data-user="'+allUsers[i]+'">View</button><button class="btn btn-sm btn-danger delete-button" data-user="'+allUsers[i]+'">Delete</button></td>');
       $('.table-body').append(userItem);
     }
   },
@@ -64,6 +57,9 @@ var userFunctions = {
   },
   viewUser: function() {
     var user = $(this).attr('data-user');
+    var userBase = storage.users[user];
+    $('#modalLabel').text(userBase.first + " " + userBase.last);
+    $('.modal-body').html("<p>Member Since: " + userBase.userSince + "</p>");
   },
   addUser: function(fullName, firstName, lastName, dateOfBirth, phoneNumber, zipCode) {
     storage.users[fullName] = {
@@ -71,7 +67,8 @@ var userFunctions = {
       last: lastName,
       dob: dateOfBirth,
       phone: phoneNumber,
-      zip: zipCode
+      zip: zipCode,
+      userSince: window.Date()
     }
     storage.update(storage.users);
     userFunctions.loadUsers();
@@ -80,11 +77,12 @@ var userFunctions = {
 
 var formFunctions = {
   clearForm: function() {
-    $('#first-name').val("");
-    $('#last-name').val("");
-    $('#dob').val("");
-    $('#zip-code').val("");
-    $('#phone-number').val("");
+    // $('#first-name').val("");
+    // $('#last-name').val("");
+    // $('#dob').val("");
+    // $('#zip-code').val("");
+    // $('#phone-number').val("");
+    location.reload(); //typically would not use a manual reload and would instead use the above code to clear form. Used this so form validation errors are removed after user added
   },
   getUserInfo: function() {
     var firstName = $('#first-name').val().trim();
