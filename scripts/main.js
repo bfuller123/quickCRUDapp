@@ -14,16 +14,24 @@ var testUsers = {
     phone: "3127187637",
     zip: "75202",
     userSince: "Wed Jan 06 2016 14:05:09 GMT-0500 (Central Daylight Time)"
+  },
+  "Robert-Wayne-Sat Jan 11 2016 14:05:09 GMT-0500 (Central Daylight Time)": {
+    first: "Robert",
+    last: "Wayne",
+    dob: "1982-04-22",
+    phone: "2147754687",
+    zip: "75202",
+    userSince: "Sat Jan 11 2016 14:05:09 GMT-0500 (Central Daylight Time)"
   }
 };
 
 var storage = {
-  users: {},
+  usersDatabase: {},
   load: function() {
-    storage.users = JSON.parse(localStorage.getItem('users'));
+    storage.usersDatabase = JSON.parse(localStorage.getItem('usersDatabase'));
   },
   update: function(obj) {
-    localStorage.setItem('users', JSON.stringify(obj));
+    localStorage.setItem('usersDatabase', JSON.stringify(obj));
   }
 }
 
@@ -31,40 +39,40 @@ var userFunctions = {
   currentUserInView: null,
   loadUsers: function() {
     $('.table-body').empty();
-    if(localStorage.getItem('users') === null){
+    if(localStorage.getItem('usersDatabase') === null){
       storage.update(testUsers);
     }
     storage.load();
-    console.log(storage.users)
-    var allUsers = Object.keys(storage.users);
+    console.log(storage.usersDatabase)
+    var allUsers = Object.keys(storage.usersDatabase);
     for (var i = 0; i < allUsers.length; i++) {
       var userItem = $('<tr>');
       userItem.attr('class', 'user-row');
       userItem.attr('data-user', allUsers[i]);
-      userItem.append('<td>'+storage.users[allUsers[i]].first+'</td>');
-      userItem.append('<td>'+storage.users[allUsers[i]].last+'</td>');
-      userItem.append('<td>'+storage.users[allUsers[i]].dob+'</td>');
-      userItem.append('<td>'+storage.users[allUsers[i]].phone+'</td>');
-      userItem.append('<td>'+storage.users[allUsers[i]].zip+'</td>');
+      userItem.append('<td>'+storage.usersDatabase[allUsers[i]].first+'</td>');
+      userItem.append('<td>'+storage.usersDatabase[allUsers[i]].last+'</td>');
+      userItem.append('<td>'+storage.usersDatabase[allUsers[i]].dob+'</td>');
+      userItem.append('<td>'+storage.usersDatabase[allUsers[i]].phone+'</td>');
+      userItem.append('<td>'+storage.usersDatabase[allUsers[i]].zip+'</td>');
       userItem.append('<td class="user-buttons"><button type="button" class="btn btn-sm btn-warning view-button" data-toggle="modal" data-target=".myModal" data-user="'+allUsers[i]+'">View</button><button class="btn btn-sm btn-danger delete-button" data-user="'+allUsers[i]+'">Delete</button></td>');
       $('.table-body').append(userItem);
     }
   },
   deleteUser: function() {
     var user = $(this).attr('data-user');
-    delete storage.users[user];
-    storage.update(storage.users);
+    delete storage.usersDatabase[user];
+    storage.update(storage.usersDatabase);
     userFunctions.loadUsers();
   },
   viewUser: function() {
     var user = $(this).attr('data-user');
     userFunctions.currentUserInView = user;
-    var userBase = storage.users[user];
+    var userBase = storage.usersDatabase[user];
     $('#modalLabel').text(userBase.first + " " + userBase.last);
     $('#memberSince').text(userBase.userSince);
   },
   addUser: function(uid, firstName, lastName, dateOfBirth, phoneNumber, zipCode, date) {
-    storage.users[uid] = {
+    storage.usersDatabase[uid] = {
       first: firstName,
       last: lastName,
       dob: dateOfBirth,
@@ -72,26 +80,26 @@ var userFunctions = {
       zip: zipCode,
       userSince: date
     }
-    storage.update(storage.users);
+    storage.update(storage.usersDatabase);
     userFunctions.loadUsers();
   },
   updateUser: function(uid, firstName, lastName, dateOfBirth, phoneNumber, zipCode) {
     if (firstName != undefined && firstName != "") {
-      storage.users[uid].first = firstName;
+      storage.usersDatabase[uid].first = firstName;
     }
     if (lastName != undefined && lastName != "") {
-      storage.users[uid].last = lastName;
+      storage.usersDatabase[uid].last = lastName;
     }
     if (dateOfBirth != undefined && dateOfBirth != "") {
-      storage.users[uid].dob = dateOfBirth;
+      storage.usersDatabase[uid].dob = dateOfBirth;
     }
     if (phoneNumber != undefined && phoneNumber != "") {
-      storage.users[uid].phone = phoneNumber;
+      storage.usersDatabase[uid].phone = phoneNumber;
     }
     if (zipCode != undefined && zipCode != "") {
-      storage.users[uid].zip = zipCode;
+      storage.usersDatabase[uid].zip = zipCode;
     }
-    storage.update(storage.users);
+    storage.update(storage.usersDatabase);
     userFunctions.loadUsers();
   }
 }
@@ -113,7 +121,7 @@ var formFunctions = {
       var dob = $('#modal-dob').val().trim();
       var zipCode = $('#modal-zip-code').val().trim();
       var phoneNumber = $('#modal-phone-number').val().trim();
-      var listOfUsers = Object.keys(storage.users);
+      var listOfUsers = Object.keys(storage.usersDatabase);
       if(listOfUsers.includes(uid)){
         userFunctions.updateUser(uid, firstName, lastName, dob, phoneNumber, zipCode);
         formFunctions.clearForm();
