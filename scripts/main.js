@@ -72,6 +72,18 @@ var userFunctions = {
     }
     storage.update(storage.users);
     userFunctions.loadUsers();
+  },
+  updateUser: function(fullName, firstName, lastName, dateOfBirth, phoneNumber, zipCode) {
+    storage.users[fullName] = {
+      first: firstName,
+      last: lastName,
+      dob: dateOfBirth,
+      phone: phoneNumber,
+      zip: zipCode,
+      userSince: window.Date()
+    }
+    storage.update(storage.users);
+    userFunctions.loadUsers();
   }
 }
 
@@ -91,8 +103,16 @@ var formFunctions = {
     var zipCode = $('#zip-code').val().trim();
     var phoneNumber = $('#phone-number').val().trim();
     var fullName = firstName + '-' + lastName;
-    userFunctions.addUser(fullName, firstName, lastName, dob, phoneNumber, zipCode);
-    formFunctions.clearForm();
+    var listOfUsers = Object.keys(storage.users);
+    if(listOfUsers.includes(fullName)){
+      // delete storage.users[fullName]
+      userFunctions.updateUser(fullName, firstName, lastName, dob, phoneNumber, zipCode);
+      formFunctions.clearForm();
+    }
+    else {
+      userFunctions.addUser(fullName, firstName, lastName, dob, phoneNumber, zipCode);
+      formFunctions.clearForm();
+    }
   },
   validateForm: function() {
     jQuery.validator.setDefaults({
