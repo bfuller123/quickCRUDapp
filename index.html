@@ -46,31 +46,31 @@
         <div class="panel-heading header">
           <h4>Sign Up</h4>
         </div>
-        <form action="" class="form panel-body">
+        <form action="" class="form panel-body" id="add-user-form">
           <div class="row">
             <div class="form-group col-xs-5 col-xs-offset-1">
               <h5>First Name</h5>
-              <input type="text" placeholder="First Name" class="form-control" id="first-name" required>
+              <input type="text" placeholder="First Name" class="form-control" id="first-name" name="firstname">
             </div>
             <div class="form-group col-xs-5">
               <h5>Last Name</h5>
-              <input type="text" placeholder="Last Name" class="form-control" id="last-name" required>
+              <input type="text" placeholder="Last Name" class="form-control" id="last-name" name="lastname">
             </div>
           </div>
           <div class="row">
             <div class="form-group col-xs-5 col-xs-offset-1">
               <h5>Phone Number</h5>
-              <input type="tel" pattern="[0-9]{4}" placeholder="xxx-xxx-xxxx" class="form-control" id="phone-number" required>
+              <input type="tel" placeholder="xxxxxxxxxx" class="form-control" id="phone-number" name="phonenumber">
             </div>
             <div class="form-group col-xs-5">
               <h5>Zip Code</h5>
-              <input type="text" pattern="[0-9]{5}" placeholder="Zip Code" class="form-control" id="zip-code" required>
+              <input type="text" placeholder="Zip Code" class="form-control" id="zip-code" name="zipcode">
             </div>
           </div>
           <div class="row">
             <div class="form-group col-xs-8 col-xs-offset-2">
               <h5>Date of Birth</h5>
-              <input type="date" class="form-control" id="dob" required>
+              <input type="date" class="form-control" id="dob" name="dob">
             </div>
           </div>
           <input type="submit" class="btn btn-block btn-primary" value="Add" id="add-button">
@@ -82,6 +82,7 @@
 </body>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js" charset="utf-8"></script>
 <script src="scripts/main.js" charset="utf-8"></script>
 
 </html>
