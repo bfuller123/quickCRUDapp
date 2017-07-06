@@ -1,0 +1,35 @@
+
+
+.user-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  align-content: center;
+  justify-content: space-around;
+}
+
+.user-buttons > button {
+  width: 40%;
+  min-width: 60px;
+}
+
+.table-title, .sign-up > .header {
+  text-align: center;
+  background-color: purple;
+}
+
+form {
+  text-align: center;
+  border: 1px LightGray solid;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  align-content: center;
+  justify-content: space-around;
+}
+
+form > div > input {
+  /*margin: 2% 0;*/
+  text-align: center;
+  font-size: 14px;
+}
