@@ -54,7 +54,7 @@ var userFunctions = {
       userItem.append('<td>'+storage.usersDatabase[allUsers[i]].dob+'</td>');
       userItem.append('<td>'+storage.usersDatabase[allUsers[i]].phone+'</td>');
       userItem.append('<td>'+storage.usersDatabase[allUsers[i]].zip+'</td>');
-      userItem.append('<td class="user-buttons"><button type="button" class="btn btn-sm btn-warning view-button" data-toggle="modal" data-target=".myModal" data-user="'+allUsers[i]+'">View</button><button class="btn btn-sm btn-danger delete-button" data-user="'+allUsers[i]+'">Delete</button></td>');
+      userItem.append('<td class="user-buttons"><button type="button" class="btn btn-sm btn-warning view-button" data-toggle="modal" data-target=".myModal" data-user="'+allUsers[i]+'">Edit</button><button class="btn btn-sm btn-danger delete-button" data-user="'+allUsers[i]+'">Delete</button></td>');
       $('.table-body').append(userItem);
     }
   },
@@ -70,6 +70,11 @@ var userFunctions = {
     var userBase = storage.usersDatabase[user];
     $('#modalLabel').text(userBase.first + " " + userBase.last);
     $('#memberSince').text(userBase.userSince);
+    $('#modal-first-name').val(userBase.first);
+    $('#modal-last-name').val(userBase.last);
+    $('#modal-phone-number').val(userBase.phone);
+    $('#modal-zip-code').val(userBase.zip);
+    $('#modal-dob').val(userBase.dob);
   },
   addUser: function(uid, firstName, lastName, dateOfBirth, phoneNumber, zipCode, date) {
     storage.usersDatabase[uid] = {
